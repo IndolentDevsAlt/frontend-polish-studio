@@ -1,24 +1,23 @@
-import { createFileRoute } from "@tanstack/react-router";
-
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
-export const Route = createFileRoute("/")({
-  component: Index,
-});
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
+import { createFileRoute } from '@tanstack/react-router';
+import { useState } from 'react';
+import { Download, Github, Monitor, ArrowUpRight, Check, Folder, FileCode2, Terminal, Send, Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { GITHUB_URL, RELEASE_URL } from '@/components/harley/shell';
+import codeImage from '@/assets/code-project.jpg';
+import connectionsImage from '@/assets/connections.jpg';
+import stepsImage from '@/assets/setup.jpg';
+export const Route = createFileRoute('/')({head: () => ({meta:[{title:'Harley — Windows için kişisel AI asistanı'},{name:'description',content:'Kod, projeler ve günlük işler için Windows üzerinde çalışan ücretsiz, açık kaynak kişisel AI asistanı Harley.'},{property:'og:title',content:'Harley — Windows için kişisel AI asistanı'},{property:'og:description',content:'Bilgisayarındaki işleri konuşarak hallet. Ücretsiz ve açık kaynak.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary_large_image'}]}),component:Index});
+const examples = [
+ {prompt:'Proje klasörünü tara ve bir README yaz.',reply:'README.md oluşturuldu. Dosya yapısı incelendi, kurulum adımları ve bağımlılıklar listelendi.',tools:['Dosya sistemi','README.md']},
+ {prompt:'Şimdi Spotify’da odak müziği aç.',reply:'Odak çalma listesi hazır. Kod yazarken sana eşlik edecek müzikler seçildi.',tools:['Spotify','Çalma listesi']},
+ {prompt:'Yarın 09:00’a proje toplantısı ekle.',reply:'Yarın 09:00 için “Proje toplantısı” etkinliği hazırlandı. Takvime eklemeden önce onayını bekliyorum.',tools:['Google','Takvim']},
+];
+function AssistantConsole() {
+ const [index,setIndex] = useState(0); const [input,setInput] = useState(''); const [busy,setBusy] = useState(false);
+ const sample=examples[index];
+ const submit=(e:React.FormEvent) => {e.preventDefault();if(busy)return;setBusy(true);const next=input.toLowerCase().includes('spotify')||input.toLowerCase().includes('müzik')?1:input.toLowerCase().includes('takvim')||input.toLowerCase().includes('toplant')?2:(index+1)%examples.length;setTimeout(()=>{setIndex(next);setInput('');setBusy(false)},650)};
+ return <div className="console"><div className="console-bar"><i className="window-dot"/><i className="window-dot"/><i className="window-dot"/><span className="console-title">Harley · çalışma alanı</span><span className="demo-badge ml-auto">Örnek oturum</span></div><div className="console-body"><div className="message"><span className="message-label">Sen</span>{sample.prompt}</div><div className="tool-row"><span className="tool-tag cool"><Folder/>{sample.tools[0]}</span><span className="tool-tag brand"><FileCode2/>{sample.tools[1]}</span><span className="tool-tag"><Terminal/>Çalışma alanı</span><span className="tool-result">{busy ? 'Hazırlanıyor…' : <><Check/>Tamamlandı</>}</span></div><div className="message harley" aria-live="polite"><span className="message-label">Harley</span>{busy?'İsteğin hazırlanıyor…':sample.reply}</div><form className="console-input" onSubmit={submit}><Sparkles/><input aria-label="Örnek komut" placeholder={examples[(index+1)%examples.length].prompt} value={input} onChange={e=>setInput(e.target.value)}/><Button type="submit" variant="ghost" size="icon" title="Örnek komutu çalıştır" aria-label="Örnek komutu çalıştır" disabled={busy}><Send/></Button></form></div></div>
 }
+const features=[{image:codeImage,title:'Kod ve proje',copy:'Kod yaz, dosyalarını düzenle, hataları bul ve test et. İstediğin teknolojiyle, tek bir çalışma alanında.'},{image:connectionsImage,title:'Bağlantılar',copy:'GitHub, Google ve Spotify. Projelerin, takvimin ve müziğin aynı asistanın içinde.'},{image:stepsImage,title:'3 adımda kurulum',copy:'İndir, kur ve anahtarını gir. Community ücretsiz; Premium özellikler çok yakında.'}];
+const faqs=[['Harley tam olarak ne yapar?','Bilgisayarında çalışan kişisel bir AI asistanıdır. Sohbet eder, kod yazar, projelerini geliştirir, e-postalarını ve takvimini okur, müzik çalar.'],['Kod bilmem gerekiyor mu?','Hayır. Günlük dille konuşman yeterlidir. İstersen Harley senin için kod da yazar.'],['Verilerim nerede saklanıyor?','Anahtarların ve yerel verilerin bilgisayarında saklanır. AI istekleri kendi anahtarınla doğrudan seçtiğin sağlayıcıya gönderilir; Harley sunucusuna sohbet gönderilmez.'],['Hangi servisler gerekli?','Sohbet için bir DeepSeek API anahtarı yeterlidir. Google, GitHub ve Spotify bağlantıları isteğe bağlıdır.'],['Community ve Premium farkı nedir?','Community ücretsiz ve açık kaynak. Premium; görsel ve belge analizi, ekran analizi ve daha yüksek token bütçesi gibi ek özellikler sunacak.'],['Hangi işletim sistemlerinde çalışır?','Harley şu an Windows 10 ve Windows 11 için geliştirilmiştir.']];
+function Index(){return <><section className="hero"><div className="hero-grid"><div className="hero-copy"><span className="eyebrow"><Monitor/>Windows · Yerel öncelikli AI</span><h1><em>Harley,</em> masanın başındaki kişisel AI asistanın.</h1><p>Kodunu yaz, projeni toparla, müziğini aç. Bilgisayarındaki işleri <span className="text-foreground">konuşarak hallet.</span> Kontrol sende, anahtarın sende. Community ücretsiz ve açık kaynak.</p><div className="hero-actions"><Button asChild variant="harley" size="lg"><a href={RELEASE_URL} target="_blank" rel="noreferrer"><Download/>Harley’i indir</a></Button><Button asChild variant="quiet" size="lg"><a href={GITHUB_URL} target="_blank" rel="noreferrer"><Github/>GitHub<ArrowUpRight/></a></Button></div><div className="hero-note"><span>Premium yakında</span><i/><span>Türkçe arayüz</span><i/><span>Açık kaynak</span></div></div><div className="glass-art" role="img" aria-label="Turuncu Harley logosu etrafında hareket eden saydam cam katmanlar"><div className="glass-sheet"/><div className="glass-sheet front"/><span className="art-cross">+</span><div className="art-logo">H</div><div className="art-caption">Kişisel. Güçlü. <span>Senin.</span></div></div></div></section><section className="page-section console-section"><div className="section-heading"><h2>Bir cümle. Bir sürü olasılık.</h2><span className="section-kicker">Harley ile bir oturum</span></div><p className="section-description">Sen ne istediğini söyle. Gerisini Harley ile birlikte hallet.</p><AssistantConsole/></section><section className="page-section" id="ozellikler"><div className="section-heading"><h2>Neler yapabilir?</h2><span className="section-kicker">Tek asistan, tüm çalışma alanın</span></div><p className="section-description">Üretmek, düzenlemek ve gününü kolaylaştırmak için yanında.</p><div className="feature-grid">{features.map((f,i)=><article className="feature-card" key={f.title}><img src={f.image} width={1024} height={768} loading="lazy" alt={f.title==='Kod ve proje'?'Turuncu vurgulu kod çalışma alanı':f.title==='Bağlantılar'?'Birbirine bağlanan saydam cam şeritler':'Üç numaralı saydam kurulum basamağı'}/><div className="feature-copy"><div className="feature-number">0{i+1}</div><h3>{f.title}</h3><p>{f.copy}</p></div></article>)}</div></section><section className="page-section" id="nasil"><h2 className="text-2xl font-medium">3 adımda hazır.</h2><div className="steps">{[['İndir ve kur','Windows paketini indir. Kurulum yerini sen seç; Harley çalışma alanına yerleşsin.'],['Anahtarını gir','Kurulum sihirbazında DeepSeek anahtarını ekle. Diğer bağlantıları istediğin zaman kur.'],['Konuşmaya başla','Sohbet, kod, proje ve günlük işler. Ne istediğini söyle, Harley ile birlikte üret.']].map(([title,text],i)=><div key={title}><span className="step-num">0{i+1}</span><h3>{title}</h3><p>{text}</p></div>)}</div></section><section className="page-section" id="sss"><h2 className="text-2xl font-medium">Aklına takılanlar.</h2><div className="faq-list">{faqs.map(([q,a])=><details key={q}><summary>{q}</summary><p>{a}</p></details>)}</div></section><footer className="footer"><span>© 2026 Harley · Windows için kişisel AI asistanı</span><a href={GITHUB_URL} target="_blank" rel="noreferrer">Açık kaynak. Birlikte daha iyi.</a></footer></>}
