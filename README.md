@@ -1,14 +1,18 @@
-# Welcome to your Lovable project
+# Design Refresh
+
+sadece frontend kısmı ile ilgilien, backend ile ilgili bir şey varma DOKUNMA. oluşturacağımız tasarım sadece bir örnek olacak. site tasarımı güzel ama çok eksik. en başta bulunan efektler falan çok cılız, vurgu yerleri eksik, kullanıcı dostu gelmiyor. mesela giriş yaptıktan sonra solda bulunan sekmelerde hesabım kısmına basınca başka yere atıyor. direkt oradaki her şey ana giriş sayfasında sol menüde gözükebilir olmalı. daha profesyonel bir site dizaynı gerek ama temaya vs. dokunma
 
 This project was built with [Lovable](https://lovable.dev).
 
+**Live app**: https://frontend-polish-studio.lovable.app
+
 ## Build with Lovable
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/df1d5477-c1e0-4e35-8bb0-84f03e4076f0).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
@@ -20,10 +24,3 @@ cd <repository-name>
 npm i
 npm run dev
 ```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
